@@ -1,139 +1,118 @@
-# EMG-Based Menstrual Cramp Detection System
+# Dysmenorrhea EMG Analysis
 
-A wearable EMG acquisition and analysis system for detecting and characterizing abdominal muscle activity associated with menstrual cramping pain in primary dysmenorrhea.
+A low-cost abdominal EMG pipeline for detecting muscle activity patterns associated with menstrual cramping pain, built on the MyoWare 2.0 sensor and Arduino.
 
----
+This project is inspired by [Oladosu et al. (2018)](https://doi.org/10.1016/j.ajog.2018.04.050), which demonstrated that abdominal skeletal muscle activity precedes spontaneous menstrual cramping pain in primary dysmenorrhea. We replicate and extend this methodology using consumer-grade hardware.
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Hardware Requirements](#hardware-requirements)
-- [Software Requirements](#software-requirements)
-- [Hardware Setup](#hardware-setup)
-- [Software Setup](#software-setup)
-- [Running the Analysis](#running-the-analysis)
-- [Output Files](#output-files)
-- [Use Cases](#use-cases)
-- [Project Structure](#project-structure)
-- [Safety Notice](#safety-notice)
+> **Note:** Raw data is not included in this repository as it contains identifiable physiological recordings. The results and plots from a sample session are included in `results/`.
 
 ---
 
-## Overview
+## Project Overview
 
-This system uses a MyoWare EMG sensor paired with an Arduino Uno to record abdominal muscle activity during menstrual cramping. Signals are logged via PuTTY and analyzed using a custom Python pipeline that performs:
+Dysmenorrhea (menstrual cramping pain) affects up to 50% of reproductive-aged women. Research suggests that involuntary abdominal muscle contractions — visceromotor reflexes (VMRs) — may precede and contribute to cramping pain. This project uses surface EMG to capture and analyze those muscle activity patterns.
 
-- Signal preprocessing and RMS envelope extraction
-- Feature extraction (RMS, MAV, variance, max amplitude)
-- Adaptive burst detection for visceromotor reflex (VMR)-like events
-- Statistical comparison between baseline and cramping recordings
-- Visualization and CSV report export
-
----
-
-## Hardware Requirements
-
-| Component | Details |
-|---|---|
-| Arduino Uno | Microcontroller for data acquisition |
-| MyoWare EMG Sensor | Surface EMG signal acquisition |
-| MyoWare Arduino Shield | Interfaces sensor with Arduino |
-| MyoWare Cable Shield | Cable connection support |
-| MyoWare Link Shield | Electrode cable connection |
-| Surface EMG Electrodes | Disposable, standard |
-| 3.5mm Audio Connector | Sensor to cable shield connection |
-| USB-B Cable | Arduino to laptop connection |
-| Laptop | Data logging — must be unplugged from power during recording |
-
----
-
-## Software Requirements
-
-```
-Python 3.x
-pandas
-numpy
-scipy
-matplotlib
-```
-
-Install dependencies:
-
-```bash
-pip install pandas numpy scipy matplotlib
-```
-
-Additional software:
-
-- **Arduino IDE** — for flashing acquisition code to the Arduino
-- **PuTTY** — for serial data logging to CSV
+**What this pipeline does:**
+- Loads and preprocesses raw MyoWare EMG recordings (baseline vs. cramping sessions)
+- Extracts signal features: RMS, MAV, variance, max amplitude
+- Detects burst events (VMR-like activity)
+- Compares baseline vs. cramping statistically
+- Logs all metrics and artifacts to MLflow for experiment tracking
 
 ---
 
 ## Hardware Setup
 
-> ⚠️ **SAFETY: Disconnect the laptop from all power outlets before collecting data.**
+**Materials:**
+- Arduino Uno
+- MyoWare 2.0 EMG Sensor + Arduino Shield
+- MyoWare Cable Shield + Link Shield
+- Surface electrodes
+- USB-B cable
+- 3.5mm audio connector
+- Laptop (not connected to mains power during recording)
 
-1. Connect the Arduino Uno and the MyoWare Arduino Shield.
-2. Connect the sensor, link shield, and cable shield.
-3. Connect one end of the 3.5mm audio cable to the sensor and the other to the Arduino cable shield. Note which analog pin is used.
-4. Connect the electrode cable to the link shield.
-5. Place electrodes on the abdominal region:
-   - **Red (V+):** 4–6 cm lateral, 2 cm above umbilicus (left side)
-   - **Blue (V−):** 4–6 cm lateral, 2 cm above umbilicus (right side)
-   - **Black (Ref):** 4 cm below V+, between umbilicus and pubic symphysis
-6. Turn the sensor on.
-7. Select the correct filter mode on the sensor (**RAW recommended**).
-8. Connect Arduino to laptop and flash acquisition code.
+**Electrode placement (abdominal region):**
 
----
+| Electrode | Color | Position |
+|-----------|-------|----------|
+| V+ | Red | 4–6 cm lateral, 2 cm above umbilicus (left) |
+| V− | Blue | 4–6 cm lateral, 2 cm above umbilicus (right) |
+| Reference | Black | 4 cm below V+, between umbilicus and pubic symphysis |
 
-## Software Setup
+> ⚠️ **Important:** Disconnect the laptop from its power supply before collecting data to avoid electrical interference.
 
-1. Open **Arduino IDE** and update the analog pin number in the code to match your hardware setup.
-2. Open **PuTTY** and select **Serial** as the connection type.
-3. Match the COM port and baud rate to the values in your Arduino code.
-4. Navigate to **Logging** and select **All session output**.
-5. Set the log file name and location. **Ensure the filename ends in `.csv`**.
-6. Open the connection only after both hardware and software are fully configured.
+**Sensor settings:** Set the MyoWare filter to `RAW` mode for best signal quality.
+
+For full step-by-step hardware and software setup, see [`docs/Standard_Operating_Procedure.md`](docs/Standard_Operating_Procedure.md).
 
 ---
 
-## Running the Analysis
+## How to Run
 
-1. Place your recorded CSV files in the `myoware_data/` directory
-
-2. Run the analysis script:
+### 1. Install dependencies
 
 ```bash
-python cramp_analysis.py
+pip install -r requirements.txt
 ```
 
-3. The script will print a full statistical summary to the console and save outputs automatically.
+### 2. Add your data
+
+Place your MyoWare CSV recordings in the `data/myoware_data/` folder:
+
+```
+data/
+└── myoware_data/
+    ├── baseline_<name>_<date>.csv
+    └── cramps_<name>_<date>.csv
+```
+
+Update file paths in `config.py` to match your filenames.
+
+### 3. Run the analysis
+
+```bash
+python main.py
+```
+
+### 4. View MLflow dashboard
+
+```bash
+mlflow ui
+```
+
+Then open [http://127.0.0.1:5000](http://127.0.0.1:5000) to explore logged metrics, parameters, and plots across runs.
 
 ---
 
-## Output Files
+## Project Structure
 
-| File | Description |
-|---|---|
-| `emg_cramp_analysis.png` | Multi-panel visualization of signals, RMS envelopes, distributions, and feature comparisons |
-| `myoware_results/emg_analysis_results.csv` | Summary metrics including mean RMS, burst counts, and burst rate |
+```
+dysmenorrhea-emg/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── requirements.txt
+├── config.py
+├── main.py
+├── data/
+│   └── .gitkeep
+├── results/
+│   └── emg_cramp_analysis.png
+├── src/
+│   ├── preprocess.py
+│   ├── features.py
+│   ├── analysis.py
+│   ├── visualize.py
+│   └── mlflow_logging.py
+├── notebooks/
+│   └── cramp_analysis.ipynb
+└── docs/
+    └── Standard_Operating_Procedure.md
+```
 
 ---
 
-## Use Cases
+## Reference
 
-**1. Closed-Loop Pain Management Device**
-EMG-derived cramp severity scores can be used to automatically adjust the output of a connected heating pad or TENS unit — delivering proportional heat or electrical stimulation without requiring the user to manually adjust settings during a painful episode.
-
-**2. Patient Cycle Tracking Dashboard**
-Aggregated multi-session data can be presented in a longitudinal dashboard showing burst frequency, intensity, and RMS trends across menstrual cycles. This provides clinicians with objective physiological data to complement self-reported pain diaries and support more informed treatment decisions.
-
----
-
-## Safety Notice
-
-- **Always disconnect the laptop from its power outlet before attaching electrodes or collecting data.**
-- Do not use this system on broken or irritated skin.
-- This system is intended for research and proof-of-concept purposes only. It is not a certified medical device.
+Oladosu, F. A., Tu, F. F., Farhan, S., Garrison, E. F., Steiner, N. D., Roth, G. E., & Hellman, K. M. (2018). Abdominal skeletal muscle activity precedes spontaneous menstrual cramping pain in primary dysmenorrhea. *American Journal of Obstetrics and Gynecology*, 219(1), 91.e1–91.e7. https://doi.org/10.1016/j.ajog.2018.04.050
