@@ -3,11 +3,11 @@ import os
 # ========================================
 # PATHS
 # ========================================
-BASELINE_PATH = os.path.join('data', 'myoware_data', 'baseline_samiya_myoware_03_16_1833.csv')
-CRAMPING_PATH = os.path.join('data', 'myoware_data', 'cramps_samiya_03_19_1537.csv')
+BASELINE_PATH = os.path.join('data', 'myoware_data', 'baseline.csv')
+CRAMPING_PATH = os.path.join('data', 'myoware_data', 'cramps.csv')
 RESULTS_DIR = 'results'
-PLOT_PATH = os.path.join(RESULTS_DIR, 'emg_cramp_analysis.png')
-RESULTS_CSV = os.path.join(RESULTS_DIR, 'emg_analysis_results.csv')
+PLOT_PATH = os.path.join(RESULTS_DIR, 'cramp_analysis.png')
+RESULTS_CSV = os.path.join(RESULTS_DIR, 'cramp_analysis_results.csv')
 
 # ========================================
 # SIGNAL PARAMETERS

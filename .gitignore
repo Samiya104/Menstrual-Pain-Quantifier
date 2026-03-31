@@ -1,0 +1,23 @@
+# Data
+data/myoware_data/
+*.csv
+
+# MLflow
+mlruns/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Results (optional - remove if you want to commit results)
+results/
