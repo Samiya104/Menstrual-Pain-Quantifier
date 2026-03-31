@@ -95,6 +95,7 @@ Menstrual-Pain-Quantifier/
 ├── config.py
 ├── main.py
 ├── firmware/
+|   ├──CONFIG.md
 │   └── myoware_data_collection.ino
 ├── data/
 │   └── .gitkeep
