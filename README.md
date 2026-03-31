@@ -101,9 +101,7 @@ Additional software:
 
 ## Running the Analysis
 
-1. Place your recorded CSV files in the `myoware_data/` directory:
-   - `baseline_samiya_myoware_03_16_1833.csv` — resting/non-cramping session
-   - `cramps_samiya_03_19_1537.csv` — cramping session
+1. Place your recorded CSV files in the `myoware_data/` directory
 
 2. Run the analysis script:
 
@@ -131,25 +129,6 @@ EMG-derived cramp severity scores can be used to automatically adjust the output
 
 **2. Patient Cycle Tracking Dashboard**
 Aggregated multi-session data can be presented in a longitudinal dashboard showing burst frequency, intensity, and RMS trends across menstrual cycles. This provides clinicians with objective physiological data to complement self-reported pain diaries and support more informed treatment decisions.
-
----
-
-## Project Structure
-
-```
-emg-cramp-detection/
-│
-├── myoware_data/
-│   ├── baseline_samiya_myoware_03_16_1833.csv
-│   └── cramps_samiya_03_19_1537.csv
-│
-├── myoware_results/
-│   └── emg_analysis_results.csv
-│
-├── cramp_analysis.py
-├── emg_cramp_analysis.png
-└── README.md
-```
 
 ---
 
