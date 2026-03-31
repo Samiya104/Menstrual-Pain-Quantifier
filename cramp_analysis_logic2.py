@@ -208,7 +208,7 @@ fig, axes = plt.subplots(4, 1, figsize=(14, 12))
 baseline_time = baseline['timestamp'].values / 1000
 cramping_time = cramping['timestamp'].values / 1000
 
-# Plot 1: Raw voltage comparison (first 60 seconds)
+# Plot 1: Raw voltage comparison 
 plot_samples = len(baseline)  # Show all baseline data
 axes[0].plot(baseline_time[:plot_samples], baseline['emg_voltage'][:plot_samples], 
              label='Baseline', alpha=0.7, linewidth=0.8)
@@ -216,7 +216,7 @@ axes[0].plot(cramping_time[:plot_samples], cramping['emg_voltage'][:plot_samples
              label='Cramping', alpha=0.7, linewidth=0.8)
 axes[0].set_ylabel('EMG Voltage (V)')
 axes[0].set_xlabel('Time (seconds)')
-axes[0].set_title('Raw MyoWare Signal Comparison (first 60 seconds)')
+axes[0].set_title('Raw MyoWare Signal Comparison')
 axes[0].legend()
 axes[0].grid(True, alpha=0.3)
 
