@@ -88,12 +88,14 @@ Then open [http://127.0.0.1:5000](http://127.0.0.1:5000) to explore logged metri
 ## Project Structure
 
 ```
-dysmenorrhea-emg/
+Menstrual-Pain-Quantifier/
 ├── README.md
 ├── .gitignore
 ├── requirements.txt
 ├── config.py
 ├── main.py
+├── firmware/
+│   └── myoware_data_collection.ino
 ├── data/
 │   └── .gitkeep
 ├── results/
@@ -107,7 +109,10 @@ dysmenorrhea-emg/
 ├── notebooks/
 │   └── cramp_analysis.ipynb
 └── docs/
+    ├── images/
+    │   └── electrode_placement.png
     └── Standard_Operating_Procedure.md
+
 ```
 
 ---
