@@ -28,7 +28,7 @@ Place electrodes on the abdominal region as follows:
 | V− | Blue | 4–6 cm lateral, 2 cm above umbilicus (right side) |
 | Reference | Black | 4 cm below V+, between umbilicus and pubic symphysis |
 
-![Electrode Placement](images/electrode_placement.png)
+![Electrode Placement](images/electrode_placement.jpg)
 
 ### Procedure
 1. Connect the Arduino Uno and the MyoWare Arduino shield.
